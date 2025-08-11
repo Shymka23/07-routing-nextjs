@@ -15,11 +15,13 @@ const getAuthHeaders = () => {
 
 export const fetchNotes = async (
   search: string,
-  page: number
+  page: number,
+  tag?: string
 ): Promise<NotesResponse> => {
   try {
     const params = {
       ...(search && { search }),
+      ...(tag && tag !== "All" && { tag }),
       page,
       perPage: 12,
     };
@@ -93,4 +95,8 @@ export const fetchNoteById = async (id: string): Promise<Note> => {
     }
     throw new Error("An unexpected error occurred while fetching note details");
   }
+};
+
+export const getAllTags = (): string[] => {
+  return ["All", "Todo", "Work", "Personal", "Meeting", "Shopping"];
 };

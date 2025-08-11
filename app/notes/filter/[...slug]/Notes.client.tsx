@@ -22,20 +22,22 @@ interface NotesClientProps {
   initialData?: NotesResponse;
   initialQuery: string;
   initialPage: number;
+  tag?: string;
 }
 
 export default function NotesClient({
   initialData,
   initialQuery,
   initialPage,
+  tag = "All",
 }: NotesClientProps) {
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [query, setQuery] = useState(initialQuery);
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const { data, isError, isLoading, isSuccess, refetch } = useQuery({
-    queryKey: ["notes", query, currentPage],
-    queryFn: () => fetchNotes(query, currentPage),
+    queryKey: ["notes", query, currentPage, tag],
+    queryFn: () => fetchNotes(query, currentPage, tag),
     placeholderData: keepPreviousData,
     // Використовуємо initialData тільки для початкового запиту
     initialData:

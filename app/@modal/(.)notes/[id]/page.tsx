@@ -51,11 +51,11 @@ export default function NotePreview({ params }: NotePreviewProps) {
               <h2 className={css.title}>{note.title}</h2>
               <span className={css.tag}>{note.tag}</span>
             </div>
-
-            <div className={css.content}>
-              <p>{note.content}</p>
+            <div className={css.scrollableContent}>
+              <div className={css.content}>
+                <p>{note.content}</p>
+              </div>
             </div>
-
             <div className={css.footer}>
               <div className={css.dates}>
                 <span className={css.date}>

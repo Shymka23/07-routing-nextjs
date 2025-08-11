@@ -7,16 +7,18 @@ import { Modal } from "@/components/Modal/Modal";
 import { Loader } from "@/components/Loader/Loader";
 import { ErrorMessage } from "@/components/ErrorMessage/ErrorMessage";
 import css from "./NotePreview.module.css";
+import { use } from "react";
 
 interface NotePreviewProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default function NotePreviewClient({ params }: NotePreviewProps) {
   const router = useRouter();
-  const noteId = params.id;
+  const resolvedParams = use(params);
+  const noteId = resolvedParams.id;
 
   const {
     data: note,

@@ -7,18 +7,12 @@ import { Modal } from "@/components/Modal/Modal";
 import { Loader } from "@/components/Loader/Loader";
 import { ErrorMessage } from "@/components/ErrorMessage/ErrorMessage";
 import css from "./NotePreview.module.css";
-import { use } from "react";
-
 interface NotePreviewProps {
-  params: Promise<{
-    id: string;
-  }>;
+  noteId: string;
 }
 
-export default function NotePreviewClient({ params }: NotePreviewProps) {
+export default function NotePreviewClient({ noteId }: NotePreviewProps) {
   const router = useRouter();
-  const resolvedParams = use(params);
-  const noteId = resolvedParams.id;
 
   const {
     data: note,
@@ -27,7 +21,7 @@ export default function NotePreviewClient({ params }: NotePreviewProps) {
   } = useQuery({
     queryKey: ["note", noteId],
     queryFn: () => fetchNoteById(noteId),
-    enabled: !!noteId,
+    refetchOnMount: false,
   });
 
   const handleClose = () => {

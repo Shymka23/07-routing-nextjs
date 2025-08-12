@@ -20,19 +20,12 @@ import { SearchBox } from "@/components/SearchBox/SearchBox";
 
 interface NotesClientProps {
   initialData?: NotesResponse;
-  initialQuery: string;
-  initialPage: number;
-  tag?: string;
+  tag: string;
 }
 
-export default function NotesClient({
-  initialData,
-  initialQuery,
-  initialPage,
-  tag = "All",
-}: NotesClientProps) {
-  const [currentPage, setCurrentPage] = useState(initialPage);
-  const [query, setQuery] = useState(initialQuery);
+export default function NotesClient({ initialData, tag }: NotesClientProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [query, setQuery] = useState("");
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const { data, isError, isLoading, isSuccess, refetch } = useQuery({
@@ -41,7 +34,7 @@ export default function NotesClient({
     placeholderData: keepPreviousData,
     // Використовуємо initialData тільки для початкового запиту
     initialData:
-      query === initialQuery && currentPage === initialPage && initialData
+      query === "" && currentPage === 1 && initialData
         ? initialData
         : undefined,
     refetchOnMount: false,

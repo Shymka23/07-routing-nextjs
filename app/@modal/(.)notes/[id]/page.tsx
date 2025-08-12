@@ -1,10 +1,30 @@
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { fetchNoteById } from "@/lib/api";
 import NotePreviewClient from "./NotePreview.client";
 
-// У випадку перехоплення маршрутів Next.js обробляє params асинхронно,
-// передаючи їх як Promise. TypeScript не може коректно це визначити
-// на рівні серверного компонента, тому ми відключаємо перевірку типів
-// для цієї конкретної ситуації.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function NotePreviewPage(props: any) {
-  return <NotePreviewClient {...props} />;
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default async function NotePreviewPage({ params }: PageProps) {
+  const { id } = await params;
+
+  // Створюємо Query Client для серверного префетчу
+  const queryClient = new QueryClient();
+
+  // Префетчимо дані нотатки на сервері
+  await queryClient.prefetchQuery({
+    queryKey: ["note", id],
+    queryFn: () => fetchNoteById(id),
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <NotePreviewClient noteId={id} />
+    </HydrationBoundary>
+  );
 }

@@ -13,30 +13,15 @@ interface NotesPageProps {
 export default async function Notes({ params }: NotesPageProps) {
   const resolvedParams = await params;
   const tag = resolvedParams.slug?.[0] || "All";
-  const initialQuery = "";
-  const initialPage = 1;
 
   try {
-    const initialData = await fetchNotes(initialQuery, initialPage, tag);
+    const initialData = await fetchNotes("", 1, tag);
 
-    return (
-      <NotesClient
-        initialData={initialData}
-        initialQuery={initialQuery}
-        initialPage={initialPage}
-        tag={tag}
-      />
-    );
+    return <NotesClient initialData={initialData} tag={tag} />;
   } catch (error) {
     console.error("Error fetching initial data:", error);
 
     // При помилці не передаємо initialData, щоб уникнути проблем з гідратацією
-    return (
-      <NotesClient
-        initialQuery={initialQuery}
-        initialPage={initialPage}
-        tag={tag}
-      />
-    );
+    return <NotesClient tag={tag} />;
   }
 }

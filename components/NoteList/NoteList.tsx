@@ -43,7 +43,11 @@ export default function NoteList({ notes }: NoteListProps) {
       {notes.map((note) => (
         <li className={css.listItem} key={note.id}>
           <div className={css.header}>
-            <Link href={`/notes/${note.id}`} className={css.titleLink}>
+            <Link
+              href={`/notes/${note.id}`}
+              className={css.titleLink}
+              scroll={false}
+            >
               <h2 className={css.title}>{note.title}</h2>
             </Link>
             <span className={css.date}>{formatDate(note.createdAt)}</span>
@@ -52,7 +56,11 @@ export default function NoteList({ notes }: NoteListProps) {
           <div className={css.footer}>
             <span className={css.tag}>{note.tag}</span>
             <div className={css.actions}>
-              <Link href={`/notes/${note.id}`} className={css.viewButton}>
+              <Link
+                href={`/notes/${note.id}`}
+                className={css.viewButton}
+                scroll={false}
+              >
                 View details
               </Link>
               <button
